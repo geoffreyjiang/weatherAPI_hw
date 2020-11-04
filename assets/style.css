@@ -17,6 +17,8 @@ body {
 
 .searchBtn {
     background-color: #adcbe3;
+    width: 40px;
+    border-radius: 20%;
 }
 
 .navbar {
