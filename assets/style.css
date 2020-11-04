@@ -1,14 +1,32 @@
 body {
     font-family: 'Open Sans', sans-serif;
     font-size: 16px;
-    background-color: #99a8b2;
+    background-color: #adcbe3;
     line-height: 1;
 }  
 
-.jumbotron {
+.search {
+    padding: 25px;
+    float: left;
+}
+
+.navbar-brand {
+    line-height: 30px;
+    text-decoration: white;
+}
+
+.searchBtn {
+    background-color: #adcbe3;
+}
+
+.navbar {
     text-align: center;
-    background-color: forestgreen;
-    font-family: 'Ultra', serif;
+    background-color: #4b86b4;
+    font-family: 'Noto Sans', sans-serif;
     border-radius: 0;
-    border-bottom: 10px solid black;
+    border-bottom: 2px solid black;
+}
+
+.sidenav {
+    float: left;
 }
