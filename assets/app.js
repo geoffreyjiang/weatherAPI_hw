@@ -1,14 +1,14 @@
 var apiKey = "10a0190a15115135e5711a7b089580be";
 var searchBtn = $(".searchBtn");
 var searchInput = $(".searchInput");
-var cityName = $(".cityName");
+var cityNameEl = $(".cityName");
 var currentDate = $(".currentDate");
-var weatherIcon = $(".weatherIcon");
+var wIcon = $(".weatherIcon");
 var searchHistory = $(".searchHistory");
-var temp = $(".temp");
-var humidityEl = $(".humidity");
-var windSpeedEl = $(".speed");
-var uvIndexEl = $(".uvIndex");
+var temperature = $(".temp");
+var humid = $(".humidity");
+var windSpeed = $(".speed");
+var ultraViolet = $(".uvIndex");
 
 
 
@@ -19,7 +19,7 @@ if(JSON.parse(localStorage.getItem("searchHistory")) === null) {
 
     }
 
-function cityInfo(cityName){
+function cityHistory(cityName){
     searchHistory.empty();
     var searchArr = JSON.parse(localStorage.getItem("searchHistory"));
     for (var i = 0; i < searchArr.length; i++) {
@@ -27,4 +27,13 @@ function cityInfo(cityName){
         listItem.text(searchArr[i])
         listItem.append.searchHistory
     }
+}
+
+function cityData(){
+    cityNameEl.text(cityName)
+    temperature.text("Temperature: ${cityTemp} °F");
+    humid.text("Humidity: ${cityHumidity}%");
+    ultraViolet.text("UV Index: ${uvVal}");
+    windSpeed.text("Wind Speed: ${cityWindSpeed}MPH");
+    wIcon.attr("src", "${cityWeatherIcon}");
 }
