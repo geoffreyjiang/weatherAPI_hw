@@ -34,6 +34,56 @@ function cityData(){
     temperature.text("Temperature: ${cityTemp} °F");
     humid.text("Humidity: ${cityHumidity}%");
     ultraViolet.text("UV Index: ${uvVal}");
-    windSpeed.text("Wind Speed: ${cityWindSpeed}MPH");
-    wIcon.attr("src", "${cityWeatherIcon}");
+    windSpeed.text("Wind Speed: ${cityWindSpeed} MPH");
+    wIcon.attr("src", cityWeatherIcon);
 }
+
+function searchData() {
+    let apiUrl ="api.openweathermap.org/data/2.5/weather?q={searchInput}&appid=${apiKey},";
+    $.ajax ({
+        url: apiUrl,
+        method: "GET"
+    })
+    .then(function(weatherData){
+        var cityInfo = {
+            cityName: weatherData.name,
+            cityTemperature: weatherData.main.temp,
+            cityHumid: weatherData.main.humidity,
+            cityWindSpeed: weatherData.main.wind.speed,
+            cityUvIndex: weatherData.coord,
+            cityWeatherIcon: weatherData.weather[0].icon
+        }
+    let apiUrl= "https://api.openweathermap.org/data/2.5/uvi?lat=${cityObj.cityUVIndex.lat}&lon=${cityObj.cityUVIndex.lon}&APPID=${apiKey}&units=imperial"
+        $.ajax({
+            url: apiUrl,
+            method: "GET"
+        })
+        .then(function(uvData){
+            if (JSON.parse(localStorage.getItem("searchHistory")) == null) {
+                let historyArr = [];
+                if (historyArr.indexOf(cityInfo.cityName) === -1){
+                    historyArr.push(cityInfo.cityName)
+                    localStorage.setItem("searchHistory", JSON.stringify(historyArr));
+                    let getWeatherIcon = `https:///openweathermap.org/img/w/${cityObj.cityWeatherIconName}.png`;
+                    cityData(cityInfo.cityName, cityInfo.cityTemperature, cityInfo.cityHumid, cityInfo.cityWindSpeed, getWeatherIcon, uvData.value);
+                    searchData(cityInfo.cityName);
+                } else {
+                    let renderedWeatherIcon = `https:///openweathermap.org/img/w/${cityObj.cityWeatherIconName}.png`;
+                    cityData(cityInfo.cityName, cityInfo.cityTemperature, cityInfo.cityHumid, cityInfo.cityWindSpeed, getWeatherIcon, uvData.value);
+                }
+            }
+        })
+        }
+    ,)
+}
+
+
+
+
+
+
+
+
+
+
+// url: api.openweathermap.org/data/2.5/forecast?q={searchInput}&appid={apiKey},
