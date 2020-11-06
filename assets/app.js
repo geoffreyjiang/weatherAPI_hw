@@ -9,6 +9,19 @@ var temperature = $(".temp");
 var humid = $(".humidity");
 var windSpeed = $(".speed");
 var ultraViolet = $(".uvIndex");
+var cardRow = $(".card-row");
+
+
+searchBtn.on("click", function(e){
+    e.preventDefault();
+    if (searchInput.val() === ""){
+        alert("Please Enter a City")
+        return;
+    }
+    searchData(searchInput.val());
+})
+
+
 
 
 
@@ -39,7 +52,7 @@ function cityData(){
 }
 
 function searchData() {
-    let apiUrl ="api.openweathermap.org/data/2.5/weather?q={searchInput}&appid=${apiKey},";
+    let apiUrl =`api.openweathermap.org/data/2.5/weather?q=${searchInput}&appid=${apiKey},`;
     $.ajax ({
         url: apiUrl,
         method: "GET"
@@ -53,7 +66,7 @@ function searchData() {
             cityUvIndex: weatherData.coord,
             cityWeatherIcon: weatherData.weather[0].icon
         }
-    let apiUrl= "https://api.openweathermap.org/data/2.5/uvi?lat=${cityObj.cityUVIndex.lat}&lon=${cityObj.cityUVIndex.lon}&APPID=${apiKey}&units=imperial"
+    let apiUrl= `https://api.openweathermap.org/data/2.5/uvi?lat=${cityObj.cityUVIndex.lat}&lon=${cityObj.cityUVIndex.lon}&APPID=${apiKey}&units=imperial`
         $.ajax({
             url: apiUrl,
             method: "GET"
@@ -64,11 +77,23 @@ function searchData() {
                 if (historyArr.indexOf(cityInfo.cityName) === -1){
                     historyArr.push(cityInfo.cityName)
                     localStorage.setItem("searchHistory", JSON.stringify(historyArr));
-                    let getWeatherIcon = `https:///openweathermap.org/img/w/${cityObj.cityWeatherIconName}.png`;
+                    let getWeatherIcon = `https:///openweathermap.org/img/w/${cityInfo.cityWeatherIcon}.png`;
                     cityData(cityInfo.cityName, cityInfo.cityTemperature, cityInfo.cityHumid, cityInfo.cityWindSpeed, getWeatherIcon, uvData.value);
                     searchData(cityInfo.cityName);
                 } else {
-                    let renderedWeatherIcon = `https:///openweathermap.org/img/w/${cityObj.cityWeatherIconName}.png`;
+                    let renderedWeatherIcon = `https:///openweathermap.org/img/w/${cityInfo.cityWeatherIcon}.png`;
+                    cityData(cityInfo.cityName, cityInfo.cityTemperature, cityInfo.cityHumid, cityInfo.cityWindSpeed, getWeatherIcon, uvData.value);
+                }
+            }else{
+                let historyArr = JSON.parse(localStorage.getItem("searchHistory"));
+                if (historyArr.indexOf(cityInfo.cityName) === -1){
+                    historyArr.push(cityInfo.cityName);
+                    localStorage.setItem("searchHistory", JSON.stringify(historyArr));
+                    let getWeatherIcon =  `https:///openweathermap.org/img/w/${cityInfo.cityWeatherIcon}.png`;
+                    cityData(cityInfo.cityName, cityInfo.cityTemperature, cityInfo.cityHumid, cityInfo.cityWindSpeed, getWeatherIcon, uvData.value);
+                    searchData(cityInfo.cityName)
+                }else{
+                    let getWeatherIcon =  `https:///openweathermap.org/img/w/${cityInfo.cityWeatherIcon}.png`;
                     cityData(cityInfo.cityName, cityInfo.cityTemperature, cityInfo.cityHumid, cityInfo.cityWindSpeed, getWeatherIcon, uvData.value);
                 }
             }
@@ -76,6 +101,31 @@ function searchData() {
         }
     ,)
 }
+
+fiveDay();
+
+function fiveDay() {
+    cardRow.empty();
+    let queryUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${searchInput}&APPID=${apiKey}&units=imperial`;
+    $.ajax ({
+        url: queryUrl,
+        method: "GET"
+    })
+    .then(function(showFiveDay){
+        for (let i = 0; i != showFiveDay.list.length; i < 8) {
+            let cityObj = {
+                icon: showFiveDay.list[i].weather[0].icon,
+                date: showFiveDay.list[i].dt_txt,
+                temp: showFiveDay.list[i].main.temp,
+                humidity: showFiveDay.list[i].main.humidity
+            }
+        }
+    })
+
+}
+
+
+
 
 
 
