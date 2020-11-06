@@ -119,9 +119,28 @@ function fiveDay() {
                 temp: showFiveDay.list[i].main.temp,
                 humidity: showFiveDay.list[i].main.humidity
             }
+            let dateStr = cityObj.date;
+            let trimDate = dateStr.substring (0, 10);
+            let weaterIcon = `https://openweathermap.org/img/w/${cityObj.icon}.png`;
+            makeCards(trimDate, weaterIcon, cityObj.temp, cityObj.humidity)
         }
     })
 
+}
+
+function makeCards(date, icon, temp, humidity) {
+    let fiveDayCardEl = $("<div>").attr("class", "five-day-card");
+    let cardDate = $("<h3>").attr("class", "card-text");
+    let cardIcon = $("<img>").attr("class", "weatherIcon");
+    let cardTemp = $("<p>").attr("class", "card-text");
+    let cardHumidity = $("<p>").attr("class", "card-text");
+
+    cardRow.append(fiveDayCardEl);
+    cardDate.text(date);
+    cardIcon.attr("src", icon);
+    cardTemp.text(`Temp: ${temp} °F`);
+    cardHumidity.text(`Humidity: ${humidity}%`);
+    fiveDayCardEl.append(cardDate, cardIcon, cardTemp, cardHumidity);
 }
 
 
@@ -136,4 +155,3 @@ function fiveDay() {
 
 
 
-// url: api.openweathermap.org/data/2.5/forecast?q={searchInput}&appid={apiKey},
