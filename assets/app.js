@@ -51,7 +51,7 @@ function cityData(name, cityTemp, cityHumidity, uvVal, cityWindSpeed){
 }
 
 function searchData(cityInput) {
-    let apiUrl =`https://api.openweathermap.org/data/2.5/weather?q=${cityInput}&APPID=10a0190a15115135e5711a7b089580be&units=imperial`;
+    let apiUrl =`api.openweathermap.org/data/2.5/weather?q=${searchInput[0].value}&appid=10a0190a15115135e5711a7b089580be&units=imperial`;
     $.ajax ({
         url: apiUrl,
         method: "GET"
