@@ -51,9 +51,13 @@ body {
     height: 40%;
 }
 
-.future-container h1 {
+.fiveDay {
     margin-top: 25px;
+    border: solid 1px #cecfd2;
     margin-left: 5%;
+    min-width: 640px;
+    padding: 12px 15px 15px 15px;
+    height: 40%;
 }
 
 li:first-child {

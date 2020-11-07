@@ -24,13 +24,12 @@ searchBtn.on("click", function(e){
 
 
 
+// if(JSON.parse(localStorage.getItem("searchHistory")) === null) {
+//         console.log("Search History not found")
+// }else  {
+//         console.log("Search History found");
 
-if(JSON.parse(localStorage.getItem("searchHistory")) === null) {
-        console.log("Search History not found")
-}else  {
-        console.log("Search History found");
-
-    }
+//     }
 
 function cityHistory(cityName){
     searchHistory.empty();
@@ -42,8 +41,8 @@ function cityHistory(cityName){
     }
 }
 
-function cityData(){
-    cityNameEl.text(cityName)
+function cityData(name, cityTemp, cityHumidity, uvVal, cityWindSpeed){
+    cityNameEl.text(name)
     temperature.text("Temperature: ${cityTemp} °F");
     humid.text("Humidity: ${cityHumidity}%");
     ultraViolet.text("UV Index: ${uvVal}");
@@ -51,22 +50,23 @@ function cityData(){
     wIcon.attr("src", cityWeatherIcon);
 }
 
-function searchData() {
-    let apiUrl =`api.openweathermap.org/data/2.5/weather?q=${searchInput}&appid=${apiKey},`;
+function searchData(cityInput) {
+    let apiUrl =`https://api.openweathermap.org/data/2.5/weather?q=${cityInput}&APPID=10a0190a15115135e5711a7b089580be&units=imperial`;
     $.ajax ({
         url: apiUrl,
         method: "GET"
     })
     .then(function(weatherData){
-        var cityInfo = {
+        let cityInfo = {
             cityName: weatherData.name,
             cityTemperature: weatherData.main.temp,
             cityHumid: weatherData.main.humidity,
-            cityWindSpeed: weatherData.main.wind.speed,
+            cityWindSpeed: weatherData.wind.speed,
             cityUvIndex: weatherData.coord,
             cityWeatherIcon: weatherData.weather[0].icon
         }
-    let apiUrl= `https://api.openweathermap.org/data/2.5/uvi?lat=${cityObj.cityUVIndex.lat}&lon=${cityObj.cityUVIndex.lon}&APPID=${apiKey}&units=imperial`
+    },
+    let, apiUrl = `https://api.openweathermap.org/data/2.5/uvi?lat=${cityInfo.cityUVIndex.lat}&lon=${cityInfo.cityUVIndex.lon}&APPID=10a0190a15115135e5711a7b089580be&units=imperial`,
         $.ajax({
             url: apiUrl,
             method: "GET"
@@ -98,9 +98,8 @@ function searchData() {
                 }
             }
         })
-        }
-    ,)
-}
+    )}
+
 
 fiveDay();
 
@@ -142,16 +141,3 @@ function makeCards(date, icon, temp, humidity) {
     cardHumidity.text(`Humidity: ${humidity}%`);
     fiveDayCardEl.append(cardDate, cardIcon, cardTemp, cardHumidity);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
